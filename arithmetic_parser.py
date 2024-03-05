@@ -112,9 +112,9 @@ def p_variable_expression(p):
         raise e
 
 def p_error(p):
-    print(f"Syntax error in input: {p}")
+    print(f"Syntax error found for token: '{p.value}' in line: {p.lineno} at position: {p.lexpos}")
 
-parser = yacc.yacc(debug=True)
+parser = yacc.yacc(debug=False)
 
 def assert_expr(expr: str, expected):
     parsed_expr = parser.parse(expr, debug=log)
@@ -163,7 +163,22 @@ if __name__ == "__main__":
     print("Write your expressions:")
     while(True): # Calculator
         data = input()
-        result = parser.parse(data)
+        try:
+            result = parser.parse(data)
+        except Exception as e:
+            print(f"Error while parsing your expression")
+        
         if result:
-            print("=>", result.eval())
+            try:
+                if type(result) == PolyExpr:
+                    result_value = print(str(result))
+                else:
+                    result_value = result.eval()
+                
+                if result_value is not None:
+                    print("=>", result_value)
+            except Exception as e:
+                print("Error while evaluating your expression")
+            
+        
 
