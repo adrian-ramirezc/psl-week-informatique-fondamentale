@@ -39,3 +39,16 @@ max([X , Y | Rest], Max) :- (X > Y ->
 test_max :- max([1, 2, 4, 3], 4).
 
 % Longueur
+len([], 0).
+len([X | Q], L) :- len(Q, L1), L is L1 + 1.
+
+test_longueur :- len([1,2,3,4], 4).
+
+% Manipulations symboliques
+pere(jean, michel).
+pere(michel, jacques).
+mere(michel, marie).
+ancetre(X, Y) :- pere(X,Y) ; mere(X, Y).
+ancetre(X, Y) :- ancetre(X,Z), ancetre(Z, Y).
+
+test_ancetre :- ancetre(jean,X); ancetre(X, jacques)
